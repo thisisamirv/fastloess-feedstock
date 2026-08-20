@@ -41,7 +41,7 @@ outputs:
         # Extract vendored dependencies before R CMD INSTALL runs configure
         cd src && tar --extract --xz -f vendor.tar.xz && cd ..
         # Unset CARGO_BUILD_TARGET to ensure configure and cargo use the same library path
-        unset CARGO_BUILD_TARGET && $R CMD INSTALL --build .
+        unset CARGO_BUILD_TARGET && R CMD INSTALL --build .
     requirements:
       build:
         - ${{ compiler('c') }}
