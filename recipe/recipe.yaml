@@ -1,8 +1,11 @@
 context:
   version: "1.0.0"
 
-package:
-  name: fastloess
+# ==============================================================================
+# Source Configuration
+# ==============================================================================
+recipe:
+  name: fastloess-split
   version: ${{ version }}
 
 source:
@@ -11,38 +14,138 @@ source:
 
 build:
   number: 0
-  skip:
-    - match(python, "<3.8")
 
-requirements:
-  build:
-    - ${{ compiler('rust') }}
-    - ${{ compiler('c') }}
-    - ${{ stdlib('c') }}
-    - cargo-bundle-licenses
-  host:
-    - python
-    - pip
-    - maturin >=1.0,<2.0
-    - numpy >=1.20
-  run:
-    - python
-    - numpy >=1.20
+# ==============================================================================
+# Multi-Output Package Definitions (R, Python, C++)
+# ==============================================================================
+outputs:
+  # ----------------------------------------------------------------------------
+  # Output 1: R Package (r-rfastloess)
+  # Note: Skip on Windows because Conda's Rust (MSVC) cannot compile for GNU
+  # target needed by Conda R (MinGW-GCC). Windows users can use Rtools/CRAN.
+  # ----------------------------------------------------------------------------
+  - package:
+      name: r-rfastloess
+    build:
+      skip:
+        - win
+      dynamic_linking:
+        missing_dso_allowlist:
+          - "*/libR.so"
+      script: |
+        cd bindings/r
+        # Patch out unused BiocGenerics dependency
+        sed '/Imports: BiocGenerics/d' DESCRIPTION > DESCRIPTION.tmp && mv DESCRIPTION.tmp DESCRIPTION
+        sed '/importFrom(BiocGenerics,normalize)/d' NAMESPACE > NAMESPACE.tmp && mv NAMESPACE.tmp NAMESPACE
+        sed '/@importFrom BiocGenerics normalize/d' R/rfastloess-package.R > rfastloess-package.R.tmp && mv rfastloess-package.R.tmp R/rfastloess-package.R
+        # Extract vendored dependencies before R CMD INSTALL runs configure
+        cd src && tar --extract --xz -f vendor.tar.xz && cd ..
+        # Unset CARGO_BUILD_TARGET to ensure configure and cargo use the same library path
+        unset CARGO_BUILD_TARGET && $R CMD INSTALL --build .
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - ${{ stdlib('c') }}
+        - ${{ compiler('rust') }}
+      host:
+        - r-base >=4.2
+      run:
+        - r-base >=4.2
+    tests:
+      - r:
+          libraries:
+            - rfastloess
 
-tests:
-  - python:
-      imports:
-        - fastloess
-      pip_check: true
+  # ----------------------------------------------------------------------------
+  # Output 2: Python Package (fastloess)
+  # ----------------------------------------------------------------------------
+  - package:
+      name: fastloess
+    build:
+      skip:
+        - match(python, "<3.8")
+      script: |
+        # Build python package using maturin
+        cd bindings/python
+        $PYTHON -m pip install . -vv --no-build-isolation
+        cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - ${{ stdlib('c') }}
+        - ${{ compiler('rust') }}
+        - cargo-bundle-licenses
+      host:
+        - python
+        - pip
+        - maturin >=1.0,<2.0
+        - numpy >=1.20
+      run:
+        - python
+        - numpy >=1.20
+    tests:
+      - python:
+          imports:
+            - fastloess
+          pip_check: true
 
+  # ----------------------------------------------------------------------------
+  # Output 3: C++ Library (libfastloess)
+  # ----------------------------------------------------------------------------
+  - package:
+      name: libfastloess
+    build:
+      script:
+        - cd bindings/cpp
+        - cargo build --release
+        - if: unix
+          then:
+            - mkdir -p $PREFIX/lib
+            - mkdir -p $PREFIX/include
+        - if: win
+          then:
+            - if not exist "%PREFIX%\Library\lib" mkdir "%PREFIX%\Library\lib"
+            - if not exist "%PREFIX%\Library\bin" mkdir "%PREFIX%\Library\bin"
+            - if not exist "%PREFIX%\Library\include" mkdir "%PREFIX%\Library\include"
+        - if: linux
+          then:
+            - find ../../target -name "libfastloess_cpp.so" -type f -exec cp {} $PREFIX/lib/libfastloess.so \;
+        - if: osx
+          then:
+            - find ../../target -name "libfastloess_cpp.dylib" -type f -exec cp {} $PREFIX/lib/libfastloess.dylib \;
+        - if: win
+          then:
+            - copy ..\..\target\release\fastloess_cpp.dll "%PREFIX%\Library\bin\fastloess.dll"
+            - copy ..\..\target\release\fastloess_cpp.dll.lib "%PREFIX%\Library\lib\fastloess.lib"
+        - if: unix
+          then:
+            - cp include/fastloess.h $PREFIX/include/
+        - if: win
+          then:
+            - copy include\fastloess.h "%PREFIX%\Library\include\"
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - ${{ stdlib('c') }}
+        - ${{ compiler('rust') }}
+    tests:
+      - package_contents:
+          include:
+            - fastloess.h
+          lib:
+            - fastloess
+
+# ==============================================================================
+# Package Metadata & Maintainers
+# ==============================================================================
 about:
   homepage: https://github.com/thisisamirv/loess-project
-  summary: High-performance LOESS (Locally Estimated Scatterplot Smoothing) for Python
-  license: MIT OR Apache-2.0
+  license: MIT AND Apache-2.0
   license_file:
     - LICENSE-MIT
     - LICENSE-APACHE
-    - THIRDPARTY.yml
+  summary: High-performance LOESS smoothing
+  description: The fastest, most robust, and most feature-complete language-agnostic LOESS (Locally Estimated Scatterplot Smoothing) implementation.
   documentation: https://loess.readthedocs.io/
   repository: https://github.com/thisisamirv/loess-project
 
