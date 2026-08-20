@@ -1,5 +1,5 @@
 context:
-  version: "0.9.0"
+  version: "1.0.0"
 
 package:
   name: fastloess
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/thisisamirv/loess-project/archive/v${{ version }}.tar.gz
-  sha256: c53d3ac941d8b32c126321b5c8ca81fcd1c7ef0f1918a6beb435cc3a32886a1c
+  sha256: efc00c983fa2777ba40d3d66e08daaddc9b325ebea04660bb2a3a5bec5e4fdc2
 
 build:
   number: 0
