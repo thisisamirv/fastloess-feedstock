@@ -64,11 +64,17 @@ outputs:
     build:
       skip:
         - match(python, "<3.8")
-      script: |
-        # Build python package using maturin
-        cd bindings/python
-        $PYTHON -m pip install . -vv --no-build-isolation
-        cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
+      script:
+        - if: unix
+          then:
+            - cd bindings/python
+            - $PYTHON -m pip install . -vv --no-build-isolation
+            - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
+        - if: win
+          then:
+            - cd bindings\python
+            - "%PYTHON% -m pip install . -vv --no-build-isolation"
+            - cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
     requirements:
       build:
         - ${{ compiler('c') }}
