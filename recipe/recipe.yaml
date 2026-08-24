@@ -103,7 +103,13 @@ outputs:
     build:
       script:
         - cd bindings/cpp
-        - cargo build --release
+        - if: unix
+          then:
+            # Unset CARGO_BUILD_TARGET so cargo outputs to target/release instead of target/<triple>/release
+            - unset CARGO_BUILD_TARGET && cargo build --release
+        - if: win
+          then:
+            - set "CARGO_BUILD_TARGET=" && cargo build --release
         - if: unix
           then:
             - mkdir -p $PREFIX/lib
