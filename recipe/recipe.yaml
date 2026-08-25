@@ -42,7 +42,7 @@ outputs:
         - if: win
           then:
             - cd bindings\r
-            - cd src && tar --extract --xz -v -f vendor.tar.xz && cd ..
+            - cd src && xz -d -f vendor.tar.xz && tar --extract -f vendor.tar && cd ..
             - set "CARGO_BUILD_TARGET=" && R CMD INSTALL --build .
     requirements:
       build:
@@ -54,6 +54,7 @@ outputs:
             - rust-std-x86_64-pc-windows-gnu
             - m2w64-toolchain
             - xz
+            - make
       host:
         - r-base >=4.4
       run:
