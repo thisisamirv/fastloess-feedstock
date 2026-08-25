@@ -37,11 +37,18 @@ outputs:
         - if: unix
           then:
             - cd bindings/r
+            # Patch out unused BiocGenerics dependency (needed pre-v1.1.0 R>=4.4 bump)
+            - sed '/Imports: BiocGenerics/d' DESCRIPTION > DESCRIPTION.tmp && mv DESCRIPTION.tmp DESCRIPTION
+            - sed '/importFrom(BiocGenerics,normalize)/d' NAMESPACE > NAMESPACE.tmp && mv NAMESPACE.tmp NAMESPACE
+            - sed '/@importFrom BiocGenerics normalize/d' R/rfastloess-package.R > rfastloess-package.R.tmp && mv rfastloess-package.R.tmp R/rfastloess-package.R
             - cd src && tar --extract --xz -f vendor.tar.xz && cd ..
             - unset CARGO_BUILD_TARGET && R CMD INSTALL --build .
         - if: win
           then:
             - cd bindings\r
+            - sed '/Imports: BiocGenerics/d' DESCRIPTION > DESCRIPTION.tmp && mv DESCRIPTION.tmp DESCRIPTION
+            - sed '/importFrom(BiocGenerics,normalize)/d' NAMESPACE > NAMESPACE.tmp && mv NAMESPACE.tmp NAMESPACE
+            - sed '/@importFrom BiocGenerics normalize/d' R/rfastloess-package.R > rfastloess-package.R.tmp && mv rfastloess-package.R.tmp R/rfastloess-package.R
             - cd src && tar --extract --xz -f vendor.tar.xz && cd ..
             - set "CARGO_BUILD_TARGET=" && R CMD INSTALL --build .
     requirements:
@@ -54,9 +61,9 @@ outputs:
             - rust_std_x86_64-pc-windows-gnu
             - m2w64-toolchain
       host:
-        - r-base >=4.4
+        - r-base >=4.6
       run:
-        - r-base >=4.4
+        - r-base >=4.6
     tests:
       - r:
           libraries:
