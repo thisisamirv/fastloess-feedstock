@@ -34,10 +34,6 @@ outputs:
           - "*/libR.so"
       script: |
         cd bindings/r
-        # Patch out unused BiocGenerics dependency
-        sed '/Imports: BiocGenerics/d' DESCRIPTION > DESCRIPTION.tmp && mv DESCRIPTION.tmp DESCRIPTION
-        sed '/importFrom(BiocGenerics,normalize)/d' NAMESPACE > NAMESPACE.tmp && mv NAMESPACE.tmp NAMESPACE
-        sed '/@importFrom BiocGenerics normalize/d' R/rfastloess-package.R > rfastloess-package.R.tmp && mv rfastloess-package.R.tmp R/rfastloess-package.R
         # Extract vendored dependencies before R CMD INSTALL runs configure
         cd src && tar --extract --xz -f vendor.tar.xz && cd ..
         # Unset CARGO_BUILD_TARGET to ensure configure and cargo use the same library path
@@ -48,9 +44,9 @@ outputs:
         - ${{ stdlib('c') }}
         - ${{ compiler('rust') }}
       host:
-        - r-base >=4.2
+        - r-base >=4.4
       run:
-        - r-base >=4.2
+        - r-base >=4.4
     tests:
       - r:
           libraries:
