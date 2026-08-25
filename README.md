@@ -5,13 +5,15 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/fastloess-feeds
 
 Home: https://github.com/thisisamirv/loess-project
 
-Package license: MIT OR Apache-2.0
+Package license: MIT AND Apache-2.0
 
-Summary: High-performance LOESS (Locally Estimated Scatterplot Smoothing) for Python
+Summary: High-performance LOESS smoothing
 
 Development: https://github.com/thisisamirv/loess-project
 
 Documentation: https://loess.readthedocs.io/
+
+The fastest, most robust, and most feature-complete language-agnostic LOESS (Locally Estimated Scatterplot Smoothing) implementation.
 
 Current build status
 ====================
@@ -38,38 +40,10 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>osx_64_python3.10.____cpython</td>
+              <td>osx_64</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=29223&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/fastloess-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_python3.10.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_python3.11.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=29223&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/fastloess-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_python3.11.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_python3.12.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=29223&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/fastloess-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_python3.12.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_python3.13.____cp313</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=29223&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/fastloess-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_python3.13.____cp313" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_python3.14.____cp314</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=29223&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/fastloess-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_python3.14.____cp314" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/fastloess-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_" alt="variant">
                 </a>
               </td>
             </tr>
@@ -86,6 +60,8 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-fastloess-green.svg)](https://anaconda.org/conda-forge/fastloess) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/fastloess.svg)](https://anaconda.org/conda-forge/fastloess) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/fastloess.svg)](https://anaconda.org/conda-forge/fastloess) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/fastloess.svg)](https://anaconda.org/conda-forge/fastloess) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libfastloess-green.svg)](https://anaconda.org/conda-forge/libfastloess) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libfastloess.svg)](https://anaconda.org/conda-forge/libfastloess) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libfastloess.svg)](https://anaconda.org/conda-forge/libfastloess) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libfastloess.svg)](https://anaconda.org/conda-forge/libfastloess) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-r--rfastloess-green.svg)](https://anaconda.org/conda-forge/r-rfastloess) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/r-rfastloess.svg)](https://anaconda.org/conda-forge/r-rfastloess) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/r-rfastloess.svg)](https://anaconda.org/conda-forge/r-rfastloess) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/r-rfastloess.svg)](https://anaconda.org/conda-forge/r-rfastloess) |
 
 Installing fastloess
 ====================
@@ -104,7 +80,7 @@ How to use
 <summary>With conda</summary>
 
 ```
-conda install fastloess
+conda install fastloess libfastloess r-rfastloess
 ```
 
 </details>
@@ -113,7 +89,7 @@ conda install fastloess
 <summary>With mamba</summary>
 
 ```
-mamba install fastloess
+mamba install fastloess libfastloess r-rfastloess
 ```
 
 </details>
@@ -123,9 +99,9 @@ mamba install fastloess
 
 ```
 # for adding to your local project
-pixi add fastloess
+pixi add fastloess libfastloess r-rfastloess
 # for installing globally
-pixi global install fastloess
+pixi global install fastloess libfastloess r-rfastloess
 ```
 
 </details>
