@@ -1,21 +1,21 @@
+<!-- markdownlint-disable MD013 MD025 MD033 MD040 MD045 -->
 About fastloess-feedstock
 =========================
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/fastloess-feedstock/blob/main/LICENSE.txt)
 
-Home: https://github.com/thisisamirv/loess-project
+Home: <https://github.com/thisisamirv/loess-project>
 
-Package license: MIT OR Apache-2.0
+Package license: MIT AND Apache-2.0
 
-Summary: High-performance LOESS (Locally Estimated Scatterplot Smoothing) for Python
+Summary: High-performance LOESS smoothing
 
-Development: https://github.com/thisisamirv/loess-project
+Documentation: <https://loess.readthedocs.io/>
 
-Documentation: https://loess.readthedocs.io/
+The fastest, most robust, and most feature-complete language-agnostic LOESS (Locally Estimated Scatterplot Smoothing) implementation.
 
 Current build status
 ====================
-
 
 <table><tr>
     <td>GitHub Actions</td>
@@ -25,7 +25,7 @@ Current build status
       </a>
     </td>
   </tr>
-    
+
   <tr>
     <td>Azure</td>
     <td>
@@ -86,6 +86,8 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-fastloess-green.svg)](https://anaconda.org/conda-forge/fastloess) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/fastloess.svg)](https://anaconda.org/conda-forge/fastloess) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/fastloess.svg)](https://anaconda.org/conda-forge/fastloess) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/fastloess.svg)](https://anaconda.org/conda-forge/fastloess) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-libfastloess-green.svg)](https://anaconda.org/conda-forge/libfastloess) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libfastloess.svg)](https://anaconda.org/conda-forge/libfastloess) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libfastloess.svg)](https://anaconda.org/conda-forge/libfastloess) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libfastloess.svg)](https://anaconda.org/conda-forge/libfastloess) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-r--rfastloess-green.svg)](https://anaconda.org/conda-forge/r-rfastloess) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/r-rfastloess.svg)](https://anaconda.org/conda-forge/r-rfastloess) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/r-rfastloess.svg)](https://anaconda.org/conda-forge/r-rfastloess) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/r-rfastloess.svg)](https://anaconda.org/conda-forge/r-rfastloess) |
 
 Installing fastloess
 ====================
@@ -104,7 +106,7 @@ How to use
 <summary>With conda</summary>
 
 ```
-conda install fastloess
+conda install fastloess libfastloess r-rfastloess
 ```
 
 </details>
@@ -113,7 +115,7 @@ conda install fastloess
 <summary>With mamba</summary>
 
 ```
-mamba install fastloess
+mamba install fastloess libfastloess r-rfastloess
 ```
 
 </details>
@@ -123,9 +125,9 @@ mamba install fastloess
 
 ```
 # for adding to your local project
-pixi add fastloess
+pixi add fastloess libfastloess r-rfastloess
 # for installing globally
-pixi global install fastloess
+pixi global install fastloess libfastloess r-rfastloess
 ```
 
 </details>
@@ -178,7 +180,6 @@ mamba repoquery depends fastloess --channel conda-forge
 
 </details>
 
-
 About conda-forge
 =================
 
@@ -219,7 +220,6 @@ Terminology
 **conda-forge** - the place where the feedstock and smithy live and work to
                   produce the finished article (built conda distributions)
 
-
 Updating fastloess-feedstock
 ============================
 
@@ -236,9 +236,10 @@ on branches in forks, and branches in the main repository should only be used to
 build distinct package versions.
 
 In order to produce a uniquely identifiable distribution:
- * If the version of a package **is not** being increased, please add or increase
+
+* If the version of a package **is not** being increased, please add or increase
    the [``build/number``](https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html#build-number-and-string).
- * If the version of a package **is** being increased, please remember to return
+* If the version of a package **is** being increased, please remember to return
    the [``build/number``](https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html#build-number-and-string)
    back to 0.
 
@@ -246,4 +247,3 @@ Feedstock Maintainers
 =====================
 
 * [@thisisamirv](https://github.com/thisisamirv/)
-
